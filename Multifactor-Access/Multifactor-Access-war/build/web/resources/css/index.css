@@ -1,0 +1,441 @@
+
+
+/*Generales*/
+.paddingGrande{
+    padding: 100px;
+}
+
+.paddingMediano{
+    padding: 50px;
+}
+
+.paddingChico{
+    padding: 25px;
+}
+
+.marginGrande{
+    margin: 100px;
+}
+
+.marginMediano{
+    margin: 50px;
+}
+
+.marginChico{
+    margin: 25px;
+}
+
+.marginPequeño{
+    margin: 5px;
+}
+
+/*Fondos*/
+/*Backgrounds*/
+
+
+.light-blue-background{
+    background-color: #576CBC;
+}
+
+.low-blue-content{
+    background-color: #A5D7E8;
+}
+
+.middle-blue-background{
+    background-color: #19376D;
+}
+
+.strong-blue-background{
+    background-color: #0B2447;
+}
+
+.gray-background{
+    background-color: #e6dfdf;
+}
+
+/*.fondo2{
+    background-color: #1450A3;
+}*/
+
+.yellow-background{
+    background-color: #FFC436;
+}
+
+.white-background{
+    background-color: white;
+}
+/*-------------------------------------------------------------------------------*/
+/*TEXTOS*/
+
+/*Campos de Tablas*/
+.table-fields{
+    font-family: monospace;
+    background-color: #FFC436;
+    color: black;
+    margin: 0;
+    padding: 5px;
+}
+
+
+/*-------------------------------------------------------------------------------*/
+
+
+
+
+/*Contenedores*/
+
+/*TOP-ASIDE*/
+.topBadge{
+    background-color: #86b6ff;
+    margin: 0;
+}
+
+.asideBadge{
+
+}
+
+.contentBadge{
+
+}
+
+
+
+/*Contenedor grande*/
+.container-space-between{
+    display: flex;
+    justify-content: space-between;
+}
+
+.conteiner-center{
+    display: flex;
+    justify-content: center;
+
+}
+.conteiner-space-around{
+    display: flex;
+    justify-content: space-around;
+}
+
+.conteiner-space-evenly{
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+
+/*Contenedor botones texto*/
+.btn-text{
+
+}
+
+/*Contendor botones icono*/
+.btn-icon{
+
+}
+
+
+
+/*Index Styles*/
+
+
+/*Foto de perfil*/
+.foto-perfil{
+    background-image: url(../..//img/camara.png);
+    background-position: center;
+    width: 50px;
+    height: 100px;
+    background-size: 90px 100px;
+    background-repeat: no-repeat;
+    margin: 0px 25px 25px 0px;
+}
+
+/*Organizacion botones de identificacion*/
+
+.button-text {
+    position: absolute;
+    bottom: 5%;
+    width: 100%;
+    left: 0%;
+}
+
+.btn-module{
+    background-image: url(../..//img/reconocimiento_facial.png);
+    background-position: center;
+    width:  300px;
+    height: 300px;
+    background-size: 150px 150px;
+    background-repeat: no-repeat;
+    border: 3px solid #6600ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+    padding: 15px;
+    margin: 0;
+}
+
+
+.btn-gafete{
+    background-image: url(../..//img/gafete.png);
+    background-position: center;
+    background-color: white;
+    color: black;
+    width:  300px;
+    height: 300px;
+    background-size: 150px 150px;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+    padding: 15px;
+    margin: 0;
+
+}
+
+
+
+.btn-RFID{
+    background-image: url(../..//img/chip_rfid.png);
+    background-position: center;
+    width:  300px;
+    height: 300px;
+    background-size: 150px 150px;
+    background-repeat: no-repeat;
+    border: 0.5px #6600ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+    padding: 15px;
+    margin: 0;
+}
+.btn-huella-dactilar{
+    background-image: url(../..//img/huella-dactilar.png);
+    background-position: center;
+    width:  300px;
+    height: 300px;
+    background-size: 150px 150px;
+    background-repeat: no-repeat;
+    border: 3px solid #6600ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+    padding: 15px;
+    margin: 0;
+}
+
+.btn-profile-picture{
+    background-image: url(../..//img/profile-picture.png);
+    background-position: center;
+    width:  200px;
+    height: 200px;
+    background-size: 100px 100px;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+    padding: 15px;
+    margin: 0;
+
+}
+
+/*Vista previa de los datos de la persona*/
+.img-gafete, .img-facial, .img-RFID, .img-huella-dactilar{
+    width: 150px;
+    height: 150px;
+}
+
+/*BOTONES OPCIONES EDITAR Y ELIMINAR LEFT TO RIGHT*/
+.speeddial-linear-demo .ui-speeddial-direction-right {
+    width: 100px;
+    height: 10px;
+    left: 0;
+    top: calc(50% - 2rem);
+}
+
+
+
+
+/*Formulario de registro Empleado*/
+
+.temani{
+    --s: 50px;
+    --c: #191b22;
+    --_s: calc(2 * var(--s)) calc(2 * var(--s));
+    --_g: 35.36% 35.36% at;
+    --_c: #0000 66%, #20222a 68% 70%, #0000 72%;
+    background: radial-gradient(var(--_g) 100% 25%, var(--_c)) var(--s) var(--s) /
+        var(--_s),
+        radial-gradient(var(--_g) 0 75%, var(--_c)) var(--s) var(--s) / var(--_s),
+        radial-gradient(var(--_g) 100% 25%, var(--_c)) 0 0 / var(--_s),
+        radial-gradient(var(--_g) 0 75%, var(--_c)) 0 0 / var(--_s),
+        repeating-conic-gradient(var(--c) 0 25%, #0000 0 50%) 0 0 / var(--_s),
+        radial-gradient(var(--_c)) 0 calc(var(--s) / 2) / var(--s) var(--s) var(--c);
+    background-attachment: fixed;
+}
+
+
+
+.form-register{
+    /*    background: linear-gradient(to left, transparent, mistyrose),
+            url("../..//img/fondo-empleado.jpg");*/
+    width:  1200px;
+    height: 600px;
+    background-size: 900px 500px;
+    text-align: center !important;
+    background-position: center !important;
+    margin: 0px;
+}
+
+.ui-dialog{
+    text-align: center !important;
+    background-position: center !important;
+
+}
+
+.form-style{
+    color: white;
+    font-family: sans-serif;
+    font-size: 25px;
+}
+.form-style-black{
+    color: black;
+    font-family: sans-serif;
+    font-size: 25px;
+}
+
+.btn-access{
+    background-image: url(../..//img/acceso.png);
+}
+
+.btn-asset{
+    background-image: url(../..//img/activos.png);
+}
+
+
+
+.btn-role{
+    background-image: url(../..//img/role.png);
+}
+
+.btn-permission-access{
+    background-image: url(../..//img/roles-usuarios.png);
+}
+
+.btn-users{
+    background-image:url(../..//img/login.png) ;
+}
+
+
+
+.btn-access, .btn-role, .btn-asset, .btn-permission-access, .btn-users{
+    margin: 10px;
+    padding: 0px;
+    width: 200px;
+    height: 220px;
+    background-size: 50px 50px;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.btn-new-employee{
+    background-image: url(../..//img/agregar-usuario.png);
+    background-position: center;
+    width:  300px;
+    height: 300px;
+    background-size: 150px 150px;
+    background-repeat: no-repeat;
+    border: 3px solid #6600ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+    padding: 15px;
+    margin: 0;
+}
+
+.btn-view-employee{
+    background-image: url(../..//img/list-contact.png);
+    background-position: center;
+    width:  300px;
+    height: 300px;
+    background-size: 150px 150px;
+    background-repeat: no-repeat;
+    border: 3px solid #6600ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    text-align: center;
+    padding: 15px;
+    margin: 0;
+}
+
+
+
+
+
+
+.edit-button{
+    background-image: url(../..//img/edit.png);
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-position: center;
+    background-size: 40px;
+    background-repeat: no-repeat;
+}
+
+.delete-button{
+    background-image: url(../..//img/delete.png);
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-position: center;
+    background-size: 40px;
+    background-repeat: no-repeat;
+}
+
+.container-content{
+
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    padding: 15px;
+}
+
+
+.colspan{
+    grid-column: span 2;
+}
+
+.custom-dialog-header{
+    background: #19376D;
+    color: #e9ecef;
+    font-weight: 700;
+    border-bottom: 0 none;
+    padding: 1.5rem;
+}
+
+
+
+
+

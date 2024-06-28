@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <h:head>
+      
+        <title>Template Index</title>
+    </h:head>
+
+    <h:body>
+
+        <div id="top" class=" middle-blue-background" style="border-bottom: 3mm ridge rgba(14, 180, 240, .6); margin: 0px; border-radius: 0px;">
+            <ui:insert name="top">Top</ui:insert>
+        </div>
+
+        <div id="content" class="center_content temani" style="color: white; overflow: hidden; height: auto; margin: 0px">
+            <ui:insert name="content">Content</ui:insert>
+        </div>
+
+
+        <div id="bottom" class="center_content temani" style="width: 100%; height: 200px; margin: 0px;">
+            <ui:insert name="bottom"></ui:insert>
+        </div>
+
+    </h:body>
+
+</html>

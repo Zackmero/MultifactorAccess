@@ -1,0 +1,177 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+
+        <link href="resources/css/cssLayout.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/index.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/default.css" rel="stylesheet" type="text/css"/>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />       
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700" rel="stylesheet" />
+
+
+        <link rel="shortcut icon" href="img/lock.png" type="image/x-icon"/>
+
+
+        <title>Acceso Multifactor</title>
+
+
+
+    </h:head>
+
+    <body class="temani">
+
+
+        <ui:composition template="./Templates/Plantillas/MainView.xhtml">
+
+            <ui:define name="top" >
+
+                <h:form id="userSession" style="padding: 10px; height: 100px;">
+
+                    <div id="layout-topbar" style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; width: 100%;">
+                        <div id="first-topbar" style="display: flex; justify-content: space-between; align-items: center; width: 100%;" class="row">
+                            <div class="col-md-1"></div>
+                            <h1 class="col-md-9">Bienvenido al sistema de accesos #{requestScope.employeeSave.name} #{requestScope.employeeSave.firstLastName} </h1>
+
+                            <p:selectOneMenu 
+                                id="profileId"  
+                                style="width:90px; 
+                                height: 90px; 
+                                border-radius: 50%; 
+                                background-image: url(img/profile-picture.png); 
+                                background-size: 90px; 
+                                background-repeat: no-repeat; 
+                                background-position: center;
+                                color: transparent;"
+                                value="#{BEANmain.selectedOption}"
+                                >
+                                <f:selectItem itemLabel="" itemValue="" itemEscaped="" transient="false" />
+                                <f:selectItem itemLabel="Perfil" itemValue="profile" />
+                                <f:selectItem itemLabel="configuraci&oacute;n" itemValue="settings" />
+                                <f:selectItem itemLabel="Salir" itemValue="logout" />
+                                <p:ajax listener="#{BEANmain.onMenuSelect}" update="@form" />
+                            </p:selectOneMenu>
+
+                            <style>
+                                .ui-selectonemenu-trigger {
+                                    display: none !important;
+                                }
+                                .ui-selectonemenu .ui-selectonemenu-label{
+                                    height: 100%;
+                                }
+                            </style>
+                        </div>
+                    </div>
+                </h:form>
+
+            </ui:define>
+
+            <ui:define name="content" >
+
+                <h:form>
+                    <div class="flex-container" style="background: none; margin-top: 40px;">
+
+                        <div class="card" style="background: white; width: 1300px; height: 700px; justify-content: flex-start; align-items: center;max-width: 1600px;">
+
+                            <p:tabView style="width: 100%;" >
+
+                                <p:tab title="Perfil" >
+                                    <div style="display: flex; flex-direction: row; margin: auto;" class="row">
+                                        <div class="col-md-3">
+
+                                            <img src="img/perfil.png" width="300" height="300" />
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; justify-content: flex-start; " class="col-md-4">
+                                            <p:outputLabel value="Nombre" style="margin: 25px; font-weight: bold;"/>
+                                            <p:outputLabel value="#{requestScope.employeeSave.name} #{requestScope.employeeSave.firstLastName} #{requestScope.employeeSave.secondLastName}" style="font-weight: 400;margin-left: 25px; color: #0033e2"/>
+                                            <p:outputLabel value="N&uacute;mero de empleado" style="margin: 25px;font-weight: bold;"/>
+                                            <p:outputLabel value="#{requestScope.employeeSave.employeeNumber}" style="font-weight: 400;margin-left: 25px; color: #0033e2"/>
+                                            <p:outputLabel value="N&uacute;mero telef&oacute;nico" style="margin: 25px;font-weight: bold;"/>
+                                            <p:outputLabel value="#{requestScope.employeeSave.phoneNumber}" style="font-weight: 400;margin-left: 25px; color: #0033e2"/>
+                                            <p:outputLabel value="Email" style="margin: 25px;font-weight: bold;"/>
+                                            <p:outputLabel value="#{requestScope.employeeSave.email}" style="font-weight: 400;margin-left: 25px; color: #0033e2"/>
+                                            <p:outputLabel value="Departamento" style="margin: 25px;font-weight: bold;"/>
+                                            <p:outputLabel value="#{requestScope.employeeSave.departament}" style="font-weight: 400;margin-left: 25px; color: #0033e2"/>
+                                            <p:outputLabel value="Rol" style="margin: 25px;font-weight: bold;"/>
+                                            <p:outputLabel value="#{requestScope.employeeSave.tbRoleId.role}" style="font-weight: 400;margin-left: 25px; color: #0033e2"/>
+                                        </div>
+                                        <div class="card col-md-5" style="background-color: white; border: white; display: flex; flex-flow: column wrap"  >
+
+                                            <div style="display: flex; align-items: center;">
+                                                <div style=" background-color:white; width: 80px; height: 80px; border: solid 3px #070707; border-radius: 20%; margin: 20px; display: flex; align-items: center; justify-content: center;">
+                                                    <img src="img/access-item-facial-64x64.png" />
+                                                </div>
+                                                <p:outputLabel value="Acceso por reconocimiento facial"/>
+                                            </div>
+
+                                            <div style="display: flex; align-items: center;">
+                                                <div style=" background-color:white; width: 80px; height: 80px; border: solid 3px #070707; border-radius: 20%; margin: 20px; display: flex; align-items: center; justify-content: center;">
+                                                    <img src="img/access-item-identificacion-64x64.png" />
+                                                </div>
+                                                <p:outputLabel value="Acceso por gafete"/>
+                                            </div>
+                                            <div style="display: flex; align-items: center;">
+                                                <div style=" background-color:white; width: 80px; height: 80px; border: solid 3px #070707; border-radius: 20%; margin: 20px; display: flex; align-items: center; justify-content: center;">
+                                                    <img src="img/access-item-rfid-64x64.png" />
+                                                </div>
+                                                <p:outputLabel value="Acceso por RFID"/>
+                                            </div>
+                                            <div style="display: flex; align-items: center;">
+                                                <div style=" background-color:white; width: 80px; height: 80px; border: solid 3px #070707; border-radius: 20%; margin: 20px; display: flex; align-items: center; justify-content: center;">
+                                                    <img src="img/access-item-finger-64x64.png" />
+                                                </div>
+                                                <p:outputLabel value="Acceso por huella dactilar"/>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </p:tab>
+                                <p:tab title="Bosques 1">
+                                    <div style="display: flex; flex-direction: row; margin: auto;" class="row">
+
+                                    </div>
+                                </p:tab>
+                                <p:tab title="Bosques 2">
+
+                                </p:tab>
+                                <p:tab title="Bosques 3">
+
+                                </p:tab>
+                                <p:tab title="MN 1">
+
+                                </p:tab>
+                                <p:tab title="MN 2">
+
+                                </p:tab>
+                                <p:tab title="MN 3">
+
+                                </p:tab>
+                                <p:tab title="Vesta">
+
+                                </p:tab>
+
+                            </p:tabView>
+                        </div>
+                    </div>
+                </h:form>
+
+            </ui:define>
+
+            <ui:define name="bottom">
+                bottom
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

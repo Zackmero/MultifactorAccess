@@ -1,0 +1,106 @@
+
+#top {
+    position: relative;
+    padding: 5px;
+    margin: 0px 0px 10px 0px;
+    border-radius: 10px;
+    text-align: center;
+    justify-content: center;
+    color: white;
+}
+
+#bottom {
+    position: relative;
+    padding: 5px;
+    margin: 0px;
+}
+
+#content{
+
+}
+
+#left {
+    float: left;
+    padding: 5px;
+    width: 150px;
+}
+
+#right {
+    float: right;
+    padding: 5px;
+    width: 150px;
+}
+
+.center_content {
+    position: relative;
+    margin-left: 20px;
+}
+
+.left_content {
+    padding: 5px;
+    margin-left: 170px;
+}
+
+.right_content {
+    padding: 5px;
+    margin: 0px 170px 0px 170px;
+}
+
+#top a:link, #top a:visited {
+    color: white;
+    font-weight : bold;
+    text-decoration: none;
+}
+
+#top a:link:hover, #top a:visited:hover  {
+    color: black;
+    font-weight : bold;
+    text-decoration : underline;
+}
+
+
+
+.new-edit-rfid, .new-edit-badge, .new-edit-access, .new-edit-permission{
+    /*    background-image: radial-gradient(
+            circle, rgba(239,118,4,1) 11%, rgba(249,167,0,1) 59%, rgba(255,196,54,1) 73%
+            );
+        background-size: auto 550px;*/
+
+    background: transparent;
+    max-width: 1500px;
+    height: 550px;
+    margin: auto;
+}
+
+.delete-badge, .delete-rfid, .delete-access, delete-permission, delete-role{
+    background: transparent;
+    max-width: 1500px;
+    height: 550px;
+    margin: auto;
+}
+
+.flex-container{
+    background-color: #1e4980;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+
+.product-item .product-item-content {
+    border: 1px solid var(--surface-d);
+    border-radius: 3px;
+    margin: .3rem;
+    text-align: center;
+    padding: 2rem 0;
+}
+
+.product-item .product-image {
+    width: 50%;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
+}
+
+
+/*INDEX USER VIEW*/
+
+

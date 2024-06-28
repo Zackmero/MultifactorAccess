@@ -1,0 +1,680 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+
+        <link href="resources/css/cssLayout.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/index.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/default.css" rel="stylesheet" type="text/css"/>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />       
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700" rel="stylesheet" />
+
+
+        <link rel="shortcut icon" href="img/lock.png" type="image/x-icon"/>
+        <title>Acceso Multifactor</title>
+
+    </h:head>
+    <body class="temani">
+
+        <ui:composition template="./Templates/Plantillas/MainView.xhtml" >
+
+            <ui:define name="top" >
+
+                <h:form id="userSession" style="padding: 10px; height: 100px;">
+
+                    <div id="layout-topbar" style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; width: 100%;">
+                        <div id="first-topbar" style="display: flex; justify-content: space-between; align-items: center; width: 100%;" class="row">
+                            <div class="col-md-1"></div>
+                            <h1 class="col-md-9">Acceso multifactor Administrador #{requestScope.employeeSave.name} #{requestScope.employeeSave.firstLastName}</h1>
+
+                            <p:selectOneMenu 
+                                id="profileIdindex"  
+                                style="width:90px; 
+                                height: 90px; 
+                                border-radius: 50%; 
+                                background-image: url(img/profile-picture.png); 
+                                background-size: 90px; 
+                                background-repeat: no-repeat; 
+                                background-position: center;
+                                color: transparent;"
+                                value="#{BEANmain.selectedOption}"
+                                >
+                                <f:selectItem itemLabel="" itemValue="" noSelectionOption="true" itemEscaped="" transient="false" />
+                                <f:selectItem itemLabel="Perfil" itemValue="profile" />
+                                <f:selectItem itemLabel="configuraci&oacute;n" itemValue="settings" />
+                                <f:selectItem itemLabel="Salir" itemValue="logout" />
+                                <p:ajax listener="#{BEANmain.onMenuSelect}" update="@form" />
+                            </p:selectOneMenu>
+                            <style>
+                                .ui-selectonemenu-trigger {
+                                    display: none !important;
+                                }
+                                .ui-selectonemenu .ui-selectonemenu-label{
+                                    height: 100%;
+                                }
+                            </style>
+                        </div>
+                    </div>
+                </h:form>
+
+
+
+            </ui:define>
+
+            <ui:define name="content">
+                <div class="conteiner-space-around" style="margin: auto; padding: 25px; height: 100%; width: 100%;">
+
+
+                    <!--GENERAL FORM-->
+                    <f:view>
+                        <h:form>
+
+                            <!--FIRST ROW-->
+                            <div class="row text-center marginMediano" style="width: 1400px;">
+
+
+                                <!--Button Facial Recognition-->
+                                <div class="col-md-3" >
+                                    <h:commandButton class="btn btn-light btn-module btn-facial" action="#{BEANmain.tableViewIndex()}" actionListener="#{BEANmain.facialListBEAN()}" value="Reconocimiento Facial" alt="Imagen Reconocimiento Facial"/>
+                                </div>                                    
+
+                                <!--Button Badge-->
+                                <div style="align-content: center;" class="col-md-3">
+                                    <p:commandButton styleClass="btn btn-light btn-gafete"
+                                                     style="background-image: url(img/gafete.png);
+                                                     background-position: center;
+                                                     background-color: white;
+                                                     color: black;
+                                                     width:  300px;
+                                                     height: 300px;
+                                                     background-size: 150px 150px;
+                                                     background-repeat: no-repeat;
+                                                     "
+                                                     action="#{BEANmain.tableViewIndex()}"
+                                                     actionListener="#{BEANmain.badgeListBEAN()}"
+                                                     alt="Imagen Gafete"
+                                                     value="Gafete"
+                                                     onclick="updateComponents();"
+                                                     />
+
+                                </div>
+
+                                <!--Button New Employee-->
+                                <div style="align-content: center;" class="col-md-3">
+                                    <p:commandButton  styleClass="btn btn-light btn-new-employee"
+                                                      style="background-image: url(img/agregar-usuario.png);
+                                                      background-position: center;
+                                                      background-color: white;
+                                                      color: black;
+                                                      width:  300px;
+                                                      height: 300px;
+                                                      background-size: 150px 150px;
+                                                      background-repeat: no-repeat;
+                                                      "
+                                                      actionListener="#{BEANmain.prepareNewEmployee()}"
+                                                      value="Registrar Empleado"
+                                                      oncomplete="PF('dlgRegisterEmployee').show();" 
+                                                      update="modalNewEmployee employeeFormModal"
+                                                      />
+                                </div>
+
+                                <!--Button Role Access View-->
+                                <div class="marginMediano text-center col-md-3" style="width: 250px;" >
+                                    <button type="button" class="btn btn-light btn-permission-access" onclick="showModal('#modalPermissionAccess');">Roles de usuarios</button>
+                                </div>
+                            </div>
+                            <!--END FIRST ROW-->
+
+                            <!--SECOND ROW-->
+                            <div class="row text-center marginMediano" style="width: 1400px;">
+
+                                <!--Button RFID-->
+                                <div class="col-md-3">
+                                    <h:commandButton class="btn btn-light btn-RFID" action="#{BEANmain.tableViewIndex()}" actionListener="#{BEANmain.rfidListBEAN()}" value="RFID" alt="Imagen RFID" />
+                                </div>
+
+                                <!--Button Huella Dactilar-->
+                                <div class="col-md-3">
+                                    <h:commandButton class="btn btn-light btn-huella-dactilar" value="Huella Dactilar" alt="Imagen Huella Dactilar"/>
+                                </div>
+
+                                <!--Button Employee Table View-->
+                                <div style="align-content: center;" class="col-md-3">
+                                    <h:commandButton type="button" styleClass="btn btn-light btn-view-employee" onclick="PF('dlgModalViewEmployee').show();" value="Empleados" />
+                                </div>
+
+                                <!-- Button Users Login Table View-->
+                                <div class="marginMediano text-center col-md-3" style="width: 250px;" >
+                                    <h:commandButton type="button" styleClass="btn btn-light btn-users" onclick="PF('dlgUsersLogin').show()" alt="Imagen administrar usuarios" value="Administrar usuarios"  />
+                                </div>
+
+                            </div>
+                            <!--END SECOND ROW-->
+
+                        </h:form>
+                    </f:view>
+                    <!--END GENERAL FORM-->
+                </div>
+
+
+
+                <!-- EMPLOYEE FORM-->
+                <p:dialog id="modalNewEmployee"
+                          header="Registrar empleado"
+                          widgetVar="dlgRegisterEmployee"
+                          modal="true"
+                          showEffect="slide"
+                          hideEffect="slide"
+                          draggable="false"
+                          resizable="false"
+                          position="center"
+                          closable="true"
+                          closeOnEscape="true"
+                          onShow="submitFormEmployee();"
+                          >
+
+
+                    #{BEANmain.accessArrayListBEAN()}
+
+                    <f:view>
+                        <h:form
+                            id="employeeFormModal" 
+                            rendered="#{BEANmain.showEmployee}"
+                            styleClass="temani"
+                            enctype="multipart/form-data"
+                            > 
+                            <p:growl id="msgs"/>
+
+                            <h:panelGrid columns="6" class="marginChico form-register ">
+                                <p:outputLabel value="Id:" for="id" rendered="false" />
+                                <p:inputText id="id" value="#{BEANmain.employee.id}" title="Id" rendered="false"/>
+
+                                <p:outputLabel value="Nombre:" for="name" styleClass="form-style"/>
+                                <p:inputText id="name"
+                                             value="#{BEANmain.employee.name}"
+                                             title="Nombre"
+                                             required="true"
+                                             requiredMessage="El nombre es requerido"
+                                             validatorMessage="Solo se aceptan letras"
+                                             onfocus="this.removeAttribute('autofocus');">
+                                    <f:validateRegex pattern="[A-Za-z ]+" />         
+                                    <p:ajax event="keyup" update="nameMessage" async="true"/>
+                                </p:inputText>
+                                <p:message id="nameMessage" for="name" showDetail="true" showSummary="false" />
+
+
+                                <p:outputLabel value="Primer Apellido:"
+                                               for="firstLastName"
+                                               styleClass="form-style"/>
+                                <p:inputText id="firstLastName"
+                                             value="#{BEANmain.employee.firstLastName}"
+                                             title="ApellidoPat"
+                                             required="true"
+                                             requiredMessage="El primer apellido es requerido"
+                                             validatorMessage="Solo se aceptan letras"
+                                             onfocus="this.removeAttribute('autofocus');">
+                                    <f:validateRegex pattern="[A-Za-z ]+" />    
+                                    <p:ajax event="keyup" update="firstLastNameMessage" async="true"/>
+                                </p:inputText>
+                                <p:message id="firstLastNameMessage" for="firstLastName" showDetail="true" showSummary="false" />
+
+                                <p:outputLabel value="Segundo Apellido:"
+                                               for="secondLastName"
+                                               styleClass="form-style"/>
+
+                                <p:inputText id="secondLastName"
+                                             value="#{BEANmain.employee.secondLastName}"
+                                             title="ApellidoMat"
+                                             required="true"
+                                             requiredMessage="El segundo apellido es requerido"
+                                             validatorMessage="Solo se aceptan letras"
+                                             onfocus="this.removeAttribute('autofocus')">
+                                    <f:validateRegex pattern="[A-Za-z ]+" />
+                                    <p:ajax event="keyup" update="secondLastNameMessage" async="true"/>
+                                </p:inputText>
+                                <p:message id="secondLastNameMessage" for="secondLastName" showDetail="true" showSummary="false"  />
+
+                                <p:outputLabel value="Numero Empleado:"
+                                               for="employeeNumber"
+                                               styleClass="form-style"/>
+                                <p:inputText id="employeeNumber"
+                                             value="#{BEANmain.employee.employeeNumber}"
+                                             title="EmployeeNumber"
+                                             required="true"
+                                             requiredMessage="El campo numero de empleado es requerido"
+                                             validatorMessage="Solo se aceptan numeros"
+                                             onfocus="this.removeAttribute('autofocus')">
+                                    <f:validateRegex pattern="\d+" />
+                                    <p:ajax event="keyup" update="employeeNumberMessage" async="true"/>
+                                </p:inputText>
+                                <p:message id="employeeNumberMessage" for="employeeNumber" showDetail="true" showSummary="false" />
+
+                                <p:outputLabel value="Gafete:"
+                                               for="tagID"
+                                               styleClass="form-style"/>
+                                <p:inputText id="tagID"
+                                             value="#{BEANmain.employee.tagID}"
+                                             title="TagID"
+                                             required="true"
+                                             requiredMessage="El campo Tag ID es requerido"
+                                             validatorMessage="Solo se aceptan numeros"
+                                             onfocus="this.removeAttribute('autofocus')"
+
+                                             >     
+                                    <f:validateRegex pattern="\d+" />
+                                    <p:ajax event="keyup" update="tagIdMessage" async="true"/>
+                                </p:inputText>
+                                <p:message id="tagIdMessage" for="tagID" showDetail="true" showSummary="false" />
+
+                                <p:outputLabel value="Telefono:"
+                                               for="phoneNumber"
+                                               styleClass="form-style"/>
+                                <p:inputText id="phoneNumber"
+                                             value="#{BEANmain.employee.phoneNumber}"
+                                             title="Telefono" 
+                                             validatorMessage="Solo se aceptan numeros, minimo 10 digitos"
+                                             onfocus="this.removeAttribute('autofocus')">
+                                    <f:validateRegex pattern="^\d*$" />
+
+                                    <p:ajax event="keyup" update="phoneNumberMessage" async="true"/>
+                                </p:inputText>
+                                <p:message id="phoneNumberMessage" for="phoneNumber" showDetail="true" showSummary="false" />
+
+                                <p:outputLabel value="Email:"
+                                               for="email"
+                                               styleClass="form-style"/>
+                                <p:inputText id="email"
+                                             value="#{BEANmain.employee.email}"
+                                             title="Email" 
+                                             validatorMessage="Formato de email incorrecto"
+                                             onfocus="this.removeAttribute('autofocus')">
+                                    <f:validateRegex pattern="^(|[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$" />
+                                    <p:ajax event="keyup" update="emailMessage" async="true"/>
+                                </p:inputText>
+                                <p:message id="emailMessage" for="email" showDetail="true" showSummary="false"/>
+
+
+                                <p:outputLabel value="Departamento:"
+                                               for="departament"
+                                               styleClass="form-style"/>
+                                <p:inputText id="departament"
+                                             value="#{BEANmain.employee.departament}"
+                                             title="Departamento"
+                                             required="true"
+                                             requiredMessage="El departamento es requerido"
+                                             validatorMessage="Solo se aceptan letras"
+                                             onfocus="this.removeAttribute('autofocus')">
+                                    <f:validateRegex pattern="[A-Za-z]+" />
+                                    <p:ajax event="keyup" update="departmentMessage" async="true"/>
+                                </p:inputText>
+                                <p:message id="departmentMessage" for="departament" showDetail="true" showSummary="false"/>
+
+                                <p:outputLabel value="Cargo:"
+                                               for="position"
+                                               styleClass="form-style"/>
+                                <p:inputText id="position"
+                                             value="#{BEANmain.employee.position}"
+                                             title="Cargo"
+                                             required="true"
+                                             requiredMessage="La posicion es requerida"
+                                             validatorMessage="Solo se aceptan letras"
+                                             onfocus="this.removeAttribute('autofocus')">
+                                    <f:validateRegex pattern="[A-Za-z ]+" />
+                                    <p:ajax event="keyup" update="positionMessage" async="true"/>
+                                </p:inputText>
+                                <p:message id="positionMessage" for="position" showDetail="true" showSummary="false" />
+
+                                <p:outputLabel value="Rfid:"
+                                               for="rfid"
+                                               styleClass="form-style"/>
+                                <p:inputText id="rfid"
+                                             value="#{BEANmain.employee.rfid}"
+                                             validatorMessage="Solo se aceptan numeros"
+                                             title="Rfid">
+                                    <f:validateRegex pattern="^\d*$" />
+                                    <p:ajax event="keyup" update="rfidMessage" async="true"/>
+                                </p:inputText>
+                                <p:message id="rfidMessage" for="rfid"  showDetail="true" showSummary="false"/>
+
+
+                                <p:outputLabel value="Rol*:" 
+                                               for="tbRoleId"
+                                               styleClass="form-style"/>
+
+                                <p:selectOneMenu id="tbRoleId"
+                                                 value="#{BEANmain.selectedRole}"
+                                                 required="true"
+                                                 requiredMessage="Se debe seleccionar un rol"
+                                                 title="tbRoleId"
+                                                 widgetVar="tbRoleId"
+                                                 >
+                                    <f:selectItem itemLabel="Seleccionar..." noSelectionOption="true"/>
+                                    <f:selectItems
+
+                                        value="#{BEANmain.roleListBEAN()}"
+                                        var="role"
+                                        itemLabel="#{role.role}"
+                                        itemValue="#{role.role}" 
+
+                                        />
+                                    <p:column>
+                                        <f:facet name="header" >
+                                            <h:outputText value="Rol" />
+                                        </f:facet>
+                                        <h:outputText id="roleSelected" value="#{role.role}" />
+                                    </p:column>
+
+                                    <f:facet name="footer">
+                                        <h:outputText value="Total de roles #{BEANmain.roleListBEAN().size()}"
+                                                      style="font-weight:bold;" class="py-1 block"/>
+                                    </f:facet>
+                                </p:selectOneMenu>
+                                <p:message id="roleMessage" for="tbRoleId"  showDetail="true" showSummary="false"/>
+
+                                <p:fileUpload value="#{BEANmain.profilePictureFile}"  mode="simple" skinSimple="true" />                                
+                            </h:panelGrid>
+
+                            <p:commandButton 
+                                id="btnCreateEmployee"
+                                styleClass="btn btn-primary"
+                                type="submit"
+                                action="#{BEANmain.createEmployee()}"
+                                value="Agregar"
+                                update="msgs modalViewEmployee"
+                                oncomplete="PF('dlgRegisterEmployee').hide();"
+                                />
+
+                        </h:form>
+
+
+                    </f:view>
+                </p:dialog>
+                <!--END EMPLOYEE FORM-->
+
+
+                <!--VIEW PERMISION ROLE ACCESS TABLE-->
+                <div id="modalPermissionAccess" class="modal">
+                    <div class="modal-dialog">
+                        <div class="modal-content"> 
+                            <div class="modal-header" style="justify-content: center;" >
+                                <h5 class="modal-title" style="color: black;">Permisos de usuario</h5>
+
+                            </div>
+                            <div class="modal-body">
+                                <f:view>
+                                    <h:form>
+
+                                        <p:dataTable value="#{BEANmain.permissionAccessList()}"
+                                                     var="permissionAccessItem"
+                                                     paginator="true"
+                                                     rows="5"
+                                                     paginatorPosition="bottom"
+                                                     >
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Rol"/>
+                                                </f:facet>
+                                                <h:outputText value="#{permissionAccessItem.tbRoleId.role}"/>
+                                            </p:column>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Acceso"/>
+                                                </f:facet>
+                                                <h:outputText value="#{permissionAccessItem.tbAccessId.area}"/>
+                                            </p:column>
+
+                                        </p:dataTable>
+
+                                        <div class="modal-footer conteiner-center text-center">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('#modalPermissionAccess')">Cerrar</button>
+                                        </div>
+                                    </h:form>
+                                </f:view>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+                <!--END VIEW PERMISSION ROLE ACCESS TABLE-->
+
+
+                <!--EMPLOYEE TABLE-->
+                <p:dialog id="modalViewEmployee"
+                          header="Lista de empleados"
+                          widgetVar="dlgModalViewEmployee"
+                          modal="true"
+                          showEffect="slide"
+                          hideEffect="slide"
+                          draggable="false"
+                          resizable="false"
+                          position="center"
+                          closeOnEscape="true"
+                          closable="true"
+                          style="width: 800px; height: 400px; max-width: 1300px; max-height: 900px; "
+                          >
+                    <h6 style="color: white">#{BEANmain.showEmployee=true}</h6>
+
+                    <f:view>
+                        <h:form>
+                            <p:dataTable value="#{BEANmain.employeeListBEAN()}"
+                                         var="employeeTable"
+                                         paginator="true"
+                                         rows="5"
+                                         paginatorPosition="bottom"
+                                         style="text-align: left;"
+                                         >
+                                <p:column style="width: 100px;">
+                                    <f:facet name="header" >
+                                        <h:outputText value="Foto" />
+                                    </f:facet>
+                                </p:column>
+                                <p:column style="width: 160px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Nombre"/>
+                                    </f:facet>
+                                    <h:outputText value="#{employeeTable.name}"/>
+                                </p:column>
+                                <p:column style="width: 160px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Primer Apellido"/>
+                                    </f:facet>
+                                    <h:outputText value="#{employeeTable.firstLastName}"/>
+                                </p:column>
+                                <p:column style="width: 160px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Segundo Apellido"/>
+                                    </f:facet>
+                                    <h:outputText value="#{employeeTable.secondLastName}"/>
+                                </p:column>
+                                <p:column style="width: 60px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Numero Empleado"/>
+                                    </f:facet>
+                                    <h:outputText value="#{employeeTable.employeeNumber}"/>
+                                </p:column>
+                                <p:column style="width: 50px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Tag ID"/>
+                                    </f:facet>
+                                    <h:outputText value="#{employeeTable.tagID}"/>
+                                </p:column>
+                                <p:column style="width: 50px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="RFID"/>
+                                    </f:facet>
+                                    <h:outputText value="#{employeeTable.rfid}"/>
+                                </p:column>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Rol"/>
+                                    </f:facet>
+                                    <h:outputText value="#{employeeTable.tbRoleId.role}"/>
+                                </p:column>
+                                <p:column style="width: 110px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Telefono"/>
+                                    </f:facet>
+                                    <h:outputText value="#{employeeTable.phoneNumber}"/>
+                                </p:column>
+                                <p:column style="width: 160px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Email"/>
+                                    </f:facet>
+                                    <h:outputText value="#{employeeTable.email}"/>
+                                </p:column>
+                                <p:column style="width: 140px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Departamento"/>
+                                    </f:facet>
+                                    <h:outputText value="#{employeeTable.departament}"/>
+                                </p:column>
+                                <p:column style="width: 100px;">
+                                    <f:facet name="header">
+                                        <h:outputText value="Cargo"/>
+                                    </f:facet>
+                                    <h:outputText value="#{employeeTable.position}"/>
+                                </p:column>
+
+
+                            </p:dataTable>
+                        </h:form>
+                    </f:view>
+
+                </p:dialog>
+                <!--END EMPLOYEE TABLE-->
+
+                <!--USERS LOGIN TABLE VIEW-->
+                <p:dialog id="modalUsersLoginView"
+                          header="Usuarios del sistema"
+                          widgetVar="dlgUsersLogin"
+                          modal="true"
+                          showEffect="slide"
+                          hideEffect="slide"
+                          draggable="false"
+                          resizable="false"
+                          position="center"
+                          closable="true"
+                          closeOnEscape="true"
+                          style="width: 800px; height: 400px; max-width: 1300px; max-height: 900px; "
+                          >
+
+                    <h:form>
+                        <p:dataTable value="#{BEANcredentialView.credentialListBEAN()}" 
+                                     var="user"
+                                     paginator="true"
+                                     paginatorPosition="bottom"
+                                     rows="10"
+                                     style="text-align: left;"
+
+                                     >
+                            <p:column style="width: 20px;">
+                                <f:facet name="header">
+                                    <h:outputText value="Id"/>
+                                </f:facet>
+                                <h:outputText value="#{user.id}"/>
+                            </p:column>
+                            <p:column style="width: 100px;">
+                                <f:facet name="header">
+                                    <h:outputText value="Empleado"/>
+                                </f:facet>
+                                <h:outputText value="#{user.tbEmployeeId.employeeNumber}"/>
+                            </p:column>
+                            <p:column style="width: 100px;">
+                                <f:facet name="header">
+                                    <h:outputText value="Password"/>
+                                </f:facet>
+                                <h:outputText value="#{user.password}"/>
+                            </p:column>
+
+                            <p:column style="width: 100px;">
+                                <f:facet name="header">
+                                    <h:outputText value="Rol"/>
+                                </f:facet>
+                                <h:outputText value="#{user.tbEmployeeId.tbRoleId.role}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+
+                </p:dialog>
+                <!--END USERS LOGIN TABLE VIEW-->
+
+
+            </ui:define>
+
+            <ui:define name="bottom">
+                bottom
+            </ui:define>
+
+        </ui:composition>
+
+
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+
+
+        <!--         FORM EMPLOYEE DIALOG-->
+        <script>
+                                                function submitFormEmployee() {
+
+                                                    document.getElementById("employeeFormModal").addEventListener("keydown", function (event) {
+                                                        if (event.key === "Enter") {
+                                                            event.preventDefault();
+                                                            return false;
+                                                        } else if (event.target.tagName !== "INPUT") {
+                                                            event.preventDefault();
+                                                        }
+                                                    });
+                                                    document.getElementById("employeeFormModal").addEventListener("submit", function (event) {
+                                                        event.preventDefault();
+                                                    });
+
+                                                    $('#modalNewEmployee').on('hidden.bs.modal', function () {
+                                                        $('.modal-backdrop').remove();
+                                                    });
+                                                }
+
+        </script>
+        <!--    END FORM EMPLOYEE DIALOG-->
+
+
+
+        <style>
+            .ui-selectcheckboxmenu-panel {
+                z-index: 1100 !important;
+            }
+            .ui-selectonemenu-panel {
+                z-index: 1100 !important;
+            }
+        </style>
+
+
+
+        <script>
+            function showModal(modalId) {
+                $(modalId).modal('show');
+                $(modalId).on('hidden.bs.modal', function () {
+                    $('.modal-backdrop').remove();
+                });
+            }
+
+            function closeModal(modalId) {
+
+                $(modalId).modal('hide');
+            }
+        </script>
+
+
+
+    </body>
+</html>

@@ -1,0 +1,402 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <h:head>
+
+        <link href="resources/css/cssLayout.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/default.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/index.css" rel="stylesheet" type="text/css"/>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />       
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700" rel="stylesheet" />
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"/>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script> 
+        <link rel="shortcut icon" href="img/lock.png" type="image/x-icon"/>
+        <title>Formularios</title>
+    </h:head>
+
+
+    <body class="temani">
+
+        <f:metadata>
+            <f:event type="preRenderView" listener="#{Select.deselectItem()}" />
+        </f:metadata>
+
+        <ui:composition template="/Templates/Plantillas/FormView.xhtml">
+
+            <ui:define name="top">
+                <div class="container-center">                    
+                    <p:graphicImage id="img" value="#{BEANmain.imgTop}" width="100px" height="100px" alt="Imagen Reconocimiento Gafete" rendered="#{BEANmain.viewValidation(BEANmain.tittle)}" />
+                    <h:outputText id="tittle" value="#{BEANmain.tittle}" style="margin: 40px; padding: 5px; font-weight : bold; font-size:  28px;" rendered="#{BEANmain.viewValidation(BEANmain.tittle)}"/>       
+                </div>
+            </ui:define>
+
+            <ui:define name="content">
+
+                <!--BAR CONTENT-->
+                <div class="card">
+                    <h:form >
+                        <p:menubar>
+                            <p:menuitem value="Gafete" action="#{BEANmain.tableViewIndex()}" actionListener="#{BEANmain.badgeListBEAN()}" icon="pi pi-fw pi-id-card"/>
+                            <p:divider layout="vertical"/>
+                            <p:menuitem value="Facial" action="#{BEANmain.tableViewIndex()}" actionListener="#{BEANmain.facialListBEAN()}" icon="pi pi-fw pi-user"/>
+                            <p:divider layout="vertical"/>
+                            <p:menuitem value="RFID" action="#{BEANmain.tableViewIndex()}" actionListener="#{BEANmain.rfidListBEAN()}" icon="pi pi-fw pi-file"/>                                
+                            <p:divider layout="vertical"/>
+                            <p:menuitem value="Huella Dactilar" icon="pi pi-fw pi-thumbs-up"/>
+                            <f:facet name="options">
+                                <p:commandButton value="Index" icon="pi pi-fw pi-sign-out" action="#{BEANmain.index()}" styleClass="ui-button-info" />
+                            </f:facet>
+                        </p:menubar>
+                    </h:form>
+
+                </div>
+                <!--END BAR CONTENT-->
+
+
+
+                <!--VALIDATION BADGE-->
+                <h:form id="selectValidation" style="display: flex; justify-content: center; align-items: center; margin-top: 100px;" rendered="#{BEANmain.tittle eq 'Validacion Gafete'}">
+                    <div class="row" style="width: 450px; display: flex; flex-direction: column; align-items: center;" >
+                        <p:growl id="msgs"/>        
+                        <div class="col-12 md:col-6 lg:col-4 xl:col-3" >
+                            <style>
+                                .custom-listbox-badge {
+                                    max-height: 250px; /* Altura máxima del componente */
+                                    /* overflow-y: auto;   Habilitar el scroll vertical si es necesario */
+                                }
+                            </style>
+
+
+                            <p:selectOneListbox  id="badgeSelected"
+                                                 value="#{Select.badgeSelected}"
+                                                 scrollHeight="180"
+                                                 filter="true" 
+                                                 filterMatchMode="contains"
+                                                 filterNormalize="true"
+                                                 caseSensitive="false"
+                                                 hideNoSelectionOption="false"
+                                                 styleClass="custom-listbox-badge container-center"
+                                                 widgetVar="listboxBadge"
+                                                 >
+
+
+                                <f:selectItem id="noneItem" itemLabel="None" value="#{Select.badgeSelected=null}" />
+
+
+                                <f:selectItems value="#{BEANmain.badgeListBEAN()}" var="badgeItem" itemLabel="#{badgeItem.name} #{badgeItem.firstLastName} #{badgeItem.secondLastName} - #{badgeItem.tagID} " itemValue="#{badgeItem.tagID}"/>
+                                <p:column>
+                                    <h:outputText value="#{badgeItem.tagID}"/>
+                                </p:column>
+                                <p:ajax event="keyup" 
+                                        update="modalValidationBadge"
+                                        listener="#{Select.filterList}" 
+                                        />
+                            </p:selectOneListbox >
+
+
+                        </div>
+
+                        <p:commandButton 
+                            id="btnValidationBadge"
+                            icon="pi pi-check-circle"
+                            styleClass="rounded-button ui-button-warning"
+                            style="justify-content: center; margin: 25px; width: 250px;"
+                            value="Validar"
+                            actionListener="#{BEANmain.findEmployeeByTagId(Select.badgeSelected)}"
+                            update="modalValidationBadge @(form)"
+                            async="true"
+                            oncomplete="if (#{BEANmain.selectedEmployeeTag!=null}) { PF('dlgValidationBadge').show();}"
+                            /> 
+                        <p:message id="msgBtnBadge" for="btnValidationBadge" showDetail="true" showSummary="false"  />
+                    </div>
+                </h:form>
+
+                <!--DIALOG VALIDATION BADGE FORM VIEW-->
+                <p:dialog id="modalValidationBadge"
+                          header="Validacion de Gafete"
+                          widgetVar="dlgValidationBadge"
+                          modal="true"
+                          showEffect="slide"
+                          hideEffect="slide"
+                          draggable="false"
+                          resizable="false"
+                          position="center"
+                          closable="false"
+                          closeOnEscape="false"
+                          style="width: 1500px; height: 700px;"
+                          >
+
+                    <h:form id="formBadgeViewValidation" style="max-width: 1400px; max-height: 600px;">
+                        <p:panelGrid columns="4" styleClass="temani">
+                            <h:outputText  value="Nombre:" class="form-style-black"/>
+                            <h:outputText  value="Primer apellido:" class="form-style-black"/>
+                            <h:outputText  value="Segundo apellido:" class="form-style-black"/>
+                            <h:outputText  value="Numero empleado:" class="form-style-black"/>
+
+                            <h:outputText value="#{empty BEANmain.selectedEmployeeTag.name ? 'Sin registro' : BEANmain.selectedEmployeeTag.name}" title="Name" style="font-size: 20px; color: #0033e2"/>
+                            <h:outputText value="#{empty BEANmain.selectedEmployeeTag.firstLastName ? 'Sin registro' : BEANmain.selectedEmployeeTag.firstLastName}" title="FirstLastName" style="font-size: 20px; color: #0033e2"/>
+                            <h:outputText value="#{empty BEANmain.selectedEmployeeTag.secondLastName ? 'Sin registro' : BEANmain.selectedEmployeeTag.secondLastName}" title="SecondLastName" style="font-size: 20px; color: #0033e2"/>
+                            <h:outputText value="#{empty BEANmain.selectedEmployeeTag.employeeNumber ? 'Sin registro' : BEANmain.selectedEmployeeTag.employeeNumber}" title="EmployeeNumber" style="font-size: 20px; color: #0033e2"/>
+
+                            <h:outputText value="Tag ID:" class="form-style-black"/>
+                            <h:outputText value="Telefono:" class="form-style-black"/>
+                            <h:outputText value="Email:" class="form-style-black"/>
+                            <h:outputText value="Departamento:" class="form-style-black"/>
+
+                            <h:outputText value="#{empty BEANmain.selectedEmployeeTag.tagID ? 'Sin registro' : BEANmain.selectedEmployeeTag.tagID}" title="TagID" style="font-size: 20px; color: #0033e2"/>
+                            <h:outputText value="#{empty BEANmain.selectedEmployeeTag.phoneNumber ? 'Sin registro' : BEANmain.selectedEmployeeTag.phoneNumber}" title="PhoneNumber" style="font-size: 20px; color: #0033e2"/>
+                            <h:outputText value="#{empty BEANmain.selectedEmployeeTag.email ? 'Sin registro' : BEANmain.selectedEmployeeTag.email}" title="Email" style="font-size: 20px; color: #0033e2"/>
+                            <h:outputText value="#{empty BEANmain.selectedEmployeeTag.departament ? 'Sin registro' : BEANmain.selectedEmployeeTag.departament}" title="Departament" style="font-size: 20px; color: #0033e2"/>
+
+
+                            <h:outputText value="Cargo:" class="form-style-black"/>
+                            <h:outputText value="Rfid:" class="form-style-black"/>
+                            <h:outputText value="Rol:" class="form-style-black"/>
+                            <h:inputHidden></h:inputHidden>
+                            <h:outputText value="#{empty BEANmain.selectedEmployeeTag.position ? 'Sin registro' : BEANmain.selectedEmployeeTag.position}" title="Position" style="font-size: 20px; color: #0033e2"/>
+                            <h:outputText value="#{empty BEANmain.selectedEmployeeTag.rfid ? 'Sin registro' : BEANmain.selectedEmployeeTag.rfid}" title="Rfid" style="font-size: 20px; color: #0033e2"/>
+                            <h:outputText value="#{empty BEANmain.selectedEmployeeTag.tbRoleId.role ? 'Sin registro' : BEANmain.selectedEmployeeTag.tbRoleId.role}" title="TbRoleId" style="font-size: 20px; color: #0033e2"/>
+                            <h:inputHidden></h:inputHidden>
+                        </p:panelGrid>
+
+                        <p:commandButton value="Cerrar"
+                                         icon="pi pi-times"
+                                         styleClass="rounded-button ui-button-danger"
+                                         actionListener="#{BEANmain.prepareValidationBadge()}"
+                                         oncomplete="afterDialogShow(); PF('dlgValidationBadge').hide();"
+                                         style="justify-content: center; margin: 25px;"
+                                         />
+
+                        <p:remoteCommand name="selectNoneItem" update="selectValidation:badgeSelected" actionListener="#{Select.deselectItem()}" />
+
+
+                        <script>
+                            function afterDialogShow() {
+                                var listbox = PF('listboxBadge');
+                                if (listbox) {
+                                    listbox.unselectAll();
+                                    setTimeout(function () {
+                                        var filterInput = listbox.jq.find('.ui-selectlistbox-filter');
+                                        filterInput.select().focus();
+                                    }, 100);
+                                }
+                            }
+
+                            function beforeDialogShow() {
+                                var listbox = PF('listboxBadge');
+                                var itemFilter = listbox.jq.find('.ui-selectlistbox-item').first();
+                                itemFilter.selectItem.focus();
+
+                            }
+
+                        </script>
+
+                    </h:form>
+                </p:dialog>
+
+                <!-- END DIALOG VALIDATION BADGE FORM VIEW-->
+
+
+                <!--END VALIDATION BADGE-->
+
+
+
+                <!--FORM NEW/EDIT ACCESS-->
+                <f:view id="accessView" rendered="#{BEANmain.viewValidation(BEANmain.tittle)}">
+                    <h:form id="accessFormNewEdit"  rendered="#{BEANmain.showAccess}" >
+                        <div class="card" style="background: none; border: none;">
+                            <p:messages id="messages"/>
+
+                            <div class="container-center container-content new-edit-access" style="margin: 25px;">
+
+
+                                <h:outputLabel value="Id:" for="id" rendered="false"/>
+                                <h:inputText id="id" value="#{BEANmain.access.id}" title="Id" rendered="false"/>
+
+
+                                <div styleClass="col-12 md:col-10" >
+                                    <p:outputLabel value="Area:" for="area" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+                                    <p:inputText id="area" value="#{BEANmain.access.area}" title="Area" required="true" requiredMessage="El campo Acceso es requerido."/>
+                                </div>                          
+
+                                <p:menu toggleable="true" style="margin: 25px;">
+                                    <p:menuitem action="#{BEANmain.addAccess()}" actionListener="#{BEANmain.badgeListBEAN()}" value="Agregar"  icon="pi pi-check-circle" rendered="#{BEANmain.access.id==null}"/>
+                                    <p:menuitem action="#{BEANmain.editAccess()}" actionListener="#{BEANmain.badgeListBEAN()}" value="Modificar" icon="pi pi-file-edit" rendered="#{BEANmain.access.id!=null}" />
+                                    <p:menuitem action="#{BEANmain.tableViewIndex()}" actionListener="#{BEANmain.badgeListBEAN()}" value="Cancelar" icon="pi pi-times" immediate="true" />
+                                </p:menu>
+
+                            </div>
+                        </div>
+                    </h:form>
+                </f:view>               
+                <!--END NEW/EDIT ACCESS-->
+
+                <!--VIEW DELETE ACCESS-->
+                <f:view id="accessViewDelete" rendered="#{BEANmain.viewValidation(BEANmain.tittle)}">
+                    <h:form id="accessFormDelete" rendered="#{BEANmain.showDeleteAccess}">
+
+                        <div class="container-center container-content delete-access" style="margin: 25px; padding: 10px;">
+                            <div class="row marginMediano" style="display: flex; flex-direction: column; align-items: center;">
+
+                                <p:panelGrid columns="2">
+                                    <h:outputText value="Id:" class="font-weight-bold"/>
+                                    <h:outputText value="#{BEANmain.access.id}" title="Id"/>
+                                    <h:outputText value="Area:" class="font-weight-bold"/>
+                                    <h:outputText value="#{BEANmain.access.area}" title="Area"/>
+                                </p:panelGrid>
+
+                                <p:menu toggleable="true">
+                                    <p:menuitem action="#{BEANmain.deleteAccess()}" actionListener="#{BEANmain.badgeListBEAN()}" value="Eliminar"  icon="pi pi-check-circle"/>
+
+                                    <p:menuitem action="#{BEANmain.tableViewIndex()}" actionListener="#{BEANmain.badgeListBEAN()}" value="Cancelar" icon="pi pi-times"/>
+                                </p:menu>
+
+                            </div>
+                        </div> 
+                    </h:form>
+                </f:view>
+                <!--END VIEW DELETE ACCESS-->
+
+
+
+                <!--FORM NEW/EDIT ROLE-->
+                <f:view id="permissionView" rendered="#{BEANmain.viewValidation(BEANmain.tittle)}">
+                    <h:form id="permissionFormNewEdit"  rendered="#{BEANmain.showRole}" >
+                        <div class="card" style="background: none; border: none;">
+                            <p:growl id="messages"/>
+
+                            <div class="container-content new-edit-permission" style="margin: 25px;">
+                                <h:outputLabel value="Id:" for="id" rendered="false"/>
+                                <h:inputText id="id" value="#{BEANmain.role.id}" title="Id" rendered="false"/>
+
+                                <div styleClass="col-12 md:col-10" >
+                                    <p:outputLabel value="Rol:" for="role" styleClass="col-12 mb-2 md:col-2 md:mb-0"/>
+                                    <p:inputText id="role" value="#{BEANmain.role.role}" title="Role" onfocus="document.getElementById('role').focus();" required="true" requiredMessage="El campo Rol es requerido."/>
+                                </div>
+
+                                <div class="container-center marginChico" >
+                                    <p:commandButton rendered="#{BEANmain.role.id==null}" action="#{BEANmain.addRole()}"  styleClass="btn btn-primary" style="margin-left: 10px; width: 120px; height: 40px; padding: 0; align-items: center;" value="Siguiente" oncomplete="PF('dlgPermissionAccess').show();" update="modalPermissionAccess dlgPermissionAccessForm  "/>
+
+                                    <p:commandButton action="#{BEANmain.editRole()}"  actionListener="#{BEANmain.badgeListBEAN()}" value="Modificar" styleClass="btn btn-primary" rendered="#{BEANmain.role.id!=null}" style="margin-left: 10px; width: 120px; height: 40px; padding: 0; align-items: center;"/>
+
+                                    <p:commandButton action="#{BEANmain.tableViewIndex()}" actionListener="#{BEANmain.badgeListBEAN()}" value="Cancelar" styleClass="btn btn-primary" immediate="true" style="margin-left: 10px; width: 120px; height: 40px; padding: 0; align-items: center;"/>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </h:form>
+                </f:view>   
+                <!--END NEW/EDIT ROLE-->
+
+
+                <!--VIEW DELETE ROLE-->
+                <f:view id="permissionViewDelete" rendered="#{BEANmain.viewValidation(BEANmain.tittle)}">
+
+                    <h:form id="permissionFormDelete" rendered="#{BEANmain.showDeleteRole}">
+
+                        <div class="container-center container-content delete-role" style="margin: 25px; padding: 10px;">
+                            <div class="row marginMediano" style="display: flex; flex-direction: column; align-items: center;">
+
+                                <h:form>
+
+                                    <p:panelGrid columns="2">
+                                        <h:outputText value="Id:"  class="font-weight-bold"/>
+                                        <h:outputText value="#{BEANmain.role.id}" title="Id"/>
+                                        <h:outputText value="Role:"  class="font-weight-bold"/>
+                                        <h:outputText value="#{BEANmain.role.role}" title="Role"/>
+                                    </p:panelGrid>
+                                </h:form>
+
+
+
+
+                                <p:menu toggleable="true">
+                                    <p:menuitem action="#{BEANmain.deleteRole()}" actionListener="#{BEANmain.badgeListBEAN()}" value="Eliminar"  icon="pi pi-check-circle"/>
+
+                                    <p:menuitem action="#{BEANmain.tableViewIndex()}" actionListener="#{BEANmain.badgeListBEAN()}" value="Cancelar" icon="pi pi-times"/>
+                                </p:menu>
+
+                            </div>
+
+
+                        </div> 
+                    </h:form>
+                </f:view>
+                <!--END VIEW DELETE ROLE-->
+
+
+                <!--NEW/EDIT PERMISSION ACCESS-->
+
+                <p:dialog id="modalPermissionAccess" header="Asignar Accesos" widgetVar="dlgPermissionAccess" modal="true" showEffect="fold" hideEffect="fold"
+                          draggable="false" resizable="false" position="center" closable="false" closeOnEscape="false" >
+                    <!-- Contenido del modal -->
+                    <h6 style="color: white;">#{BEANmain.showPermissionAccess=true} </h6>
+                    <f:view id="permissionAccessView">
+
+                        <h:form id="dlgPermissionAccessForm" rendered="#{BEANmain.showPermissionAccess}" >
+                            <p:outputLabel value="Id:" for="id" rendered="false" />
+                            <p:inputText id="id" value="#{BEANmain.permissionAccess.id}" title="Id" required="true" requiredMessage="The Id field is required." rendered="false"/>
+
+
+                            <h:outputLabel value="TbRoleId:" for="tbRoleId" styleClass="col-12 mb-2 md:col-2 md:mb-0" rendered="false"/>
+                            <h:outputText id="tbRoleId" value="#{BEANmain.role.id}" title="TbRoleId"/>
+
+
+
+                            <h:outputLabel value="Accesos:" for="tbAccessId" styleClass="col-12 mb-2 md:col-2 md:mb-0" rendered="false"/>                                               
+                            <div class="card">
+                                <p:growl>
+                                    <p:autoUpdate />
+                                </p:growl>
+                                <p:selectManyCheckbox id="tbAccessId" value="#{BEANmain.selectedAccess}" layout="responsive"
+                                                      columns="3">
+                                    <f:selectItems value="#{BEANmain.accessListBEAN()}" var="accesses" itemLabel ="#{accesses.area}" itemValue="#{accesses.area}"/>
+                                </p:selectManyCheckbox>
+                            </div>
+
+                            <div class="modal-footer marginChico" style="display: flex; flex-direction: column; justify-content: center;" >
+                                <p:commandButton action="#{BEANmain.addRoleAccess(BEANmain.accessListBEAN(), BEANmain.selectedAccess)}"  value="Agregar "  icon="pi pi-check-circle" rendered="#{BEANmain.role.id==null}"/>
+                            </div>
+
+                        </h:form>
+                    </f:view>
+                </p:dialog>
+
+                <!--END NEW/EDIT PERMISSION ACCESS-->
+
+            </ui:define>
+        </ui:composition>
+
+        <script>
+
+            function showModal(modalId) {
+
+                // Muestra el modal
+                $(modalId).modal('show');
+            }
+
+            function closeModal(modalId) {
+
+                $(modalId).modal('hide');
+            }
+
+
+        </script>
+
+
+    </body>
+</html>

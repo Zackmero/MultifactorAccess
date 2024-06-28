@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+  <persistence-unit name="Multifactor-Access-ejbPU" transaction-type="JTA">
+    <jta-data-source>jdbc/MultifactorAccess</jta-data-source>
+    <class>Foxconn.System.ENTITY.Access</class>
+    <class>Foxconn.System.ENTITY.Asset</class>
+    <class>Foxconn.System.ENTITY.Badge</class>
+    <class>Foxconn.System.ENTITY.Employee</class>
+    <class>Foxconn.System.ENTITY.Permission</class>
+    <class>Foxconn.System.ENTITY.Rfid</class>
+    <class>Foxconn.System.ENTITY.Facial</class>
+    <class>Foxconn.System.ENTITY.PermissionAccess</class>
+    <class>Foxconn.System.ENTITY.PermissionAsset</class>
+    <class>Foxconn.System.ENTITY.Role</class>
+    <class>Foxconn.System.ENTITY.Credential</class>
+    <class>Foxconn.System.ENTITY.GroupEmployee</class>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties/>
+  </persistence-unit>
+</persistence>

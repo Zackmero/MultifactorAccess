@@ -1,0 +1,391 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />       
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700" rel="stylesheet" />
+
+
+        <link href="resources/css/cssLayout.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/default.css" rel="stylesheet" type="text/css"/>
+        <link href="resources/css/index.css" rel="stylesheet" type="text/css"/>
+        <link rel="shortcut icon" href="img/lock.png" type="image/x-icon"/>
+
+        <title>Tablas</title>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+        </script>
+    </h:head>
+
+    <body class="temani">
+
+
+        <ui:composition template="/Templates/Plantillas/TableView.xhtml">
+
+            <!--TOP-->
+            <ui:define name="top">
+                <div class="conteiner-center">                    
+
+
+
+                    <p:graphicImage id="img" value="#{BEANmain.imgTop}" width="100px" height="100px" alt="Imagen Reconocimiento Gafete" rendered="#{BEANmain.viewValidation(BEANmain.tittle)}" />
+                    <h:outputText id="tittle" value="#{BEANmain.tittle}" style="margin: 40px; padding: 5px; font-weight : bold; font-size:  28px;" rendered="#{BEANmain.viewValidation(BEANmain.tittle)}"/>       
+
+
+                </div>
+            </ui:define>
+            <!--END TOP-->
+
+            <!--LEFT-->
+            <ui:define name="left">
+
+                <h:form>
+                    <h2 class="text-center" style="color: white;">MENU</h2>
+
+                    <div style="padding: 20px;">
+                        <p:megaMenu orientation="vertical" autoDisplay="false" style="width: 220px;" >
+
+
+
+                            <p:submenu label="Gafete" icon="pi pi-id-card">
+                                <p:column>
+                                    <p:submenu label="Gafete">
+                                        <p:menuitem value="Listar" action="#{BEANmain.tableViewIndex()}" actionListener="#{BEANmain.badgeListBEAN()}" update="tittle img navForm badgeForm :badgeForm:badgeTable rfidForm :rfidForm:rfidTable" />
+                                        <p:menuitem value="Validar" action="#{BEANmain.formViewIndex()}" actionListener="#{BEANmain.prepareValidationBadge()}" />
+                                    </p:submenu>
+                                </p:column>
+                            </p:submenu>
+
+
+                            <p:submenu label="Facial" icon="pi pi-user">
+                                <p:column>
+                                    <p:submenu label="Reconocimiento Facial">
+                                        <p:menuitem value="Listar" action="#{BEANmain.tableViewIndex()}" actionListener="#{BEANmain.facialListBEAN()}" update="tittle img navForm badgeForm :badgeForm:badgeTable rfidForm :rfidForm:rfidTable" />
+                                        <p:menuitem value="Validar" action="#{BEANmain.formViewIndex()}" actionListener="#{BEANmain.prepareValidationFacial()}" />
+                                    </p:submenu>
+                                </p:column>
+                            </p:submenu>
+
+                            <p:submenu label="RFID" icon="pi pi-file-o">
+                                <p:column>
+                                    <p:submenu label="RFID">
+                                        <p:menuitem value="Listar" action="#{BEANmain.tableViewIndex()}" actionListener="#{BEANmain.rfidListBEAN()}" update="tittle img navForm rfidForm :rfidForm:rfidTable badgeForm :badgeForm:badgeTable"/>
+                                        <p:menuitem value="Validar" action="#{BEANmain.formViewIndex()}" actionListener="#{BEANmain.prepareValidationRfid()}" />
+                                    </p:submenu>
+                                </p:column>
+                            </p:submenu>
+
+                            <p:submenu label="Huella Dactilar" icon="pi pi-thumbs-up">
+                                <p:column>
+                                    <p:submenu label="Huella Dactilar">
+                                        <p:menuitem value="Listar"  />
+                                        <p:menuitem value="Validar" />
+                                    </p:submenu>
+                                </p:column>
+                            </p:submenu>
+
+                        </p:megaMenu>
+
+
+                        <div class="card" style="display: flex; justify-content: center; flex-direction: column; align-items:center;   margin-top: 50px; height: 400px;">
+                            <button type="button" class="btn btn-light btn-access" onclick="showModal('#modalAccess')">Accesos</button>
+                            <button type="button" class="btn btn-light btn-role" onclick="showModal('#modalRole')">Roles</button>
+                            <button type="button" class="btn btn-light btn-asset">Activos</button>
+                        </div>
+
+
+                    </div>
+                </h:form>
+
+            </ui:define>
+            <!--END LEFT-->
+
+
+            <!--CONTENT-->
+            <ui:define name="content">
+
+
+                <!--TOP BAR -->
+                <f:view>
+                    <h:form id="navForm">
+                        <div class="row container-space-between " style="margin-bottom: 25px; width: 950px;">
+
+
+                            <div class="col-9" style="width: 300px;"  >
+                                <div class="conteiner-space-evenly" >
+                                    <div style="width: 300px;">
+                                        <p:breadCrumb>
+                                            <p:menuitem icon="pi pi-home" action="#{BEANmain.index()}" />
+                                            <p:menuitem id="navBar" value="#{BEANmain.navegationBar}" icon="pi pi-list" rendered="#{BEANmain.viewValidation(BEANmain.tittle)}"/>
+
+                                        </p:breadCrumb>  
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!--BUTTONS-->
+                            <div style="display: flex; justify-content: flex-end;" class="col-3">
+
+
+                                <p:commandButton action="#{BEANmain.index()}" icon="pi pi-undo" value="Regresar" style="margin: 0px 25px 25px 25px; background-color: #4CD964; color: black;" />
+
+                            </div>
+                            <!--END BUTTONS-->
+                        </div>
+                    </h:form>
+                </f:view>
+                <!--END TOP BAR BADGE-->
+
+
+
+                <!--BADGE TABLE-->
+                <f:view>
+                    <h:form id="badgeForm" rendered="#{BEANmain.viewValidation(BEANmain.tittle)}">
+                        <p:remoteCommand name="updateComponents" update="badgeForm:badgeTable badgeForm badgeTable" />
+                        <p:dataTable id="badgeTable" rendered="#{BEANmain.showBadge}" value="#{BEANmain.badgeListBEAN()}" var="badgeItem" style="max-height: 500px; overflow-y: auto;"
+                                     paginator="true" rows="5" styleClass="mt-2" 
+                                     paginatorPosition="bottom">
+                            <p:column style="width: 10px;">
+                                <f:facet name="header">
+                                    <h:outputText value="Id"/>
+                                </f:facet>
+                                <h:outputText value="#{badgeItem.id}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Nombre"/>
+                                </f:facet>
+                                <h:outputText value="#{badgeItem.name.concat(' ').concat(badgeItem.firstLastName).concat(' ').concat(badgeItem.secondLastName)}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Numero empleado"/>
+                                </f:facet>
+                                <h:outputText value="#{badgeItem.employeeNumber}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="TagID"/>
+                                </f:facet>
+                                <h:outputText value="#{badgeItem.tagID}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Rol"/>
+                                </f:facet>
+                                <h:outputText value="#{badgeItem.tbRoleId.role}" />
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Departamento"/>
+                                </f:facet>
+                                <h:outputText value="#{badgeItem.departament}" />
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+                </f:view>
+                <!--END BADGE TABLE-->
+
+                <!--RFID TABLE-->
+                <f:view>
+                    <h:form id="rfidForm" rendered="#{BEANmain.viewValidation(BEANmain.tittle)}" >
+                        <p:dataTable id="rfidTable" 
+                                     rendered="#{BEANmain.showRFID}" 
+                                     value="#{BEANmain.rfidListBEAN()}" 
+                                     var="rfidItem" 
+                                     style="max-height: 500px; overflow-y: auto;"
+                                     paginator="true" 
+                                     rows="5" 
+                                     styleClass="mt-2" 
+                                     paginatorPosition="bottom">
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Id"/>
+                                </f:facet>
+                                <h:outputText value="#{rfidItem.id}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Rfid"/>
+                                </f:facet>
+                                <h:outputText value="#{rfidItem.rfid}"/>
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+                </f:view>
+                <!-- END RFID TABLE-->
+
+                <!--FACIAL TABLE-->
+                <f:view>
+                    <h:form id="facialForm" rendered="#{BEANmain.viewValidation(BEANmain.tittle)}">
+                        <p:dataTable id="facialTable" value="#{BEANmain.facialListBEAN()}"
+                                     var="facialItem" 
+                                     rendered="#{BEANmain.showFacial}"
+                                     style="max-height: 500px; overflow-y: auto;"
+                                     paginator="true" 
+                                     rows="5"
+                                     styleClass="mt-2" 
+                                     paginatorPosition="bottom">
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Id"/>
+                                </f:facet>
+                                <h:outputText value="#{facialItem.id}"/>
+                            </p:column>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Picture"/>
+                                </f:facet>
+                                <h:outputText value="#{facialItem.name}"/>
+                            </p:column>
+
+                        </p:dataTable>
+                    </h:form>
+                </f:view>
+
+                <!--END FACIAL TABLE-->
+
+            </ui:define>
+            <!--END CONTENT-->
+        </ui:composition>
+
+
+
+
+
+
+
+
+
+
+        <!--VIEW ACCESS TABLE-->
+        <div id="modalAccess" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content"> 
+                    <div class="modal-header" style="justify-content: center;">
+                        <h3 class="modal-title"><strong>Accesos</strong></h3>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <f:view>
+                            <h:form>
+                                <p:dataTable value="#{BEANmain.accessListBEAN()}" var="accessItem" paginator="true" rows="5" paginatorPosition="bottom" >
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Id"/>
+                                        </f:facet>
+                                        <h:outputText value="#{accessItem.id}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Acessos"/>
+                                        </f:facet>
+                                        <h:outputText value="#{accessItem.area}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton icon="pi pi-pencil" styleClass="rounded-button ui-button-flat" action="#{BEANmain.formViewIndex()}" actionListener="#{BEANmain.prepareEditAccess(accessItem)}" />
+                                        <p:commandButton icon="pi pi-times" styleClass="rounded-button ui-button-danger ui-button-flat" action="#{BEANmain.formViewIndex()}" actionListener="#{BEANmain.prepareDeleteAccess(accessItem)}" />
+                                    </p:column>
+
+                                </p:dataTable>
+
+                                <div class="modal-footer conteiner-center text-center">
+
+                                    <p:commandButton styleClass="ui-button-success" action="#{BEANmain.formViewIndex()}" actionListener="#{BEANmain.prepareNewAccess()}" value="Agregar"/>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('#modalAccess')">Cerrar</button>
+
+                                </div>
+                            </h:form>
+                        </f:view>
+                    </div>
+                </div>
+            </div>
+        </div>    
+        <!--END VIEW ACCESS TABLE-->
+
+
+
+
+
+
+        <!--VIEW ROLE  TABLE-->
+        <div id="modalRole" class="modal">
+            <div class="modal-dialog">
+                <div class="modal-content"> 
+                    <div class="modal-header " style="justify-content: center;">
+                        <h3 class="modal-title"><strong>Roles</strong></h3>
+                    </div>
+                    <div class="modal-body">
+                        <f:view>
+                            <h:form>
+                                <p:dataTable value="#{BEANmain.roleListBEAN()}" var="permissionAccessItem" >
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Id"/>
+                                        </f:facet>
+                                        <h:outputText value="#{permissionAccessItem.id}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Rol"/>
+                                        </f:facet>
+                                        <h:outputText value="#{permissionAccessItem.role}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <p:commandButton icon="pi pi-pencil" styleClass="rounded-button ui-button-flat" action="#{BEANmain.formViewIndex()}" actionListener="#{BEANmain.prepareEditRole(roleItem)}" />
+                                        <p:commandButton icon="pi pi-times" styleClass="rounded-button ui-button-danger ui-button-flat" action="#{BEANmain.formViewIndex()}" actionListener="#{BEANmain.prepareDeleteRole(roleItem)}" />
+                                    </p:column>
+
+                                </p:dataTable>
+
+                                <div class="modal-footer conteiner-center text-center">
+                                    <p:commandButton styleClass="ui-button-success" action="#{BEANmain.formViewIndex()}" actionListener="#{BEANmain.prepareNewRole()}" value="Agregar rol"/>
+
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" onclick="closeModal('#modalRole')">Cerrar</button>
+                                </div>
+                            </h:form>
+                        </f:view>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>    
+        <!--END VIEW  ROLE  TABLE-->
+
+
+
+
+        <script>
+
+            function showModal(modalId) {
+
+                // Muestra el modal
+                $(modalId).modal('show');
+            }
+
+            function closeModal(modalId) {
+
+                $(modalId).modal('hide');
+            }
+
+
+        </script>
+
+
+    </body>
+</html>
